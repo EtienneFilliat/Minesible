@@ -1,0 +1,15 @@
+---
+
+- name: Install Required packages
+  apt:
+    pkg:
+      - "{{ required_packages }}"
+    state: present
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: install openjdk
+  apt:
+    name: "{{ openjdk_release }}"

@@ -1,0 +1,14 @@
+---
+
+- name: create main user
+  user:
+    name: "{{ main_user }}"
+    shell: /bin/zsh
+    create_home: yes
+    append: yes
+
+- name: create minecraft server directory
+  become_user: "{{ main_user }}"
+  file:
+    path: "{{ server_path }}"
+    state: directory

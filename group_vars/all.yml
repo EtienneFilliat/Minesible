@@ -1,0 +1,25 @@
+---
+
+# --------- USER
+
+main_user: minecraft
+
+ server_path: "/home/{{ main_user }}/minesible-{{ ansible_date_time.date }}"
+
+# --------- PACKAGES
+
+required_packages:
+  - software-properties-common
+  - python-software-properties
+
+openjdk_release: openjdk-8-jdk-headless
+
+# --------- PaperMC
+
+minecraft_major_version: 1.16
+
+minecraft_minor_version: 5
+
+minecraft_target: "{{ minecraft_major_version }}.{{minecraft_minor_version}}"
+
+paper_project: paper

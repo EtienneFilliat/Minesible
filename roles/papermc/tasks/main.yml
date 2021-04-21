@@ -1,0 +1,43 @@
+---
+
+- name: query paper latest version
+  uri:
+    url: "https://papermc.io/api/v2/projects/{{ paper_project }}/version_group/{{ minecraft_major_version }}"
+    return_content: yes
+  register: paper_project_info
+
+- name: verify targetted minecraft version is supported by papermc
+  assert:
+    that: minecraft_target in paper_project_info.json.versions
+    fail_msg: "Minecaraft version {{ minecraft_target }} isn't supported by PaperMc. Supported versions are: {{ paper_project_info.json.versions }} "
+    success_msg: "Minecraft version {{ minecraft_target }} is supported by PaperMc"
+
+- name: query papermc latest build for version {{ minecraft_target }}
+  uri:
+    url: "https://papermc.io/api/v2/projects/{{ paper_project }}/versions/{{ minecraft_target }}"
+    return_content: yes
+  register: build_result_raw
+
+- name: extract latest build version for papermc {{ minecraft_target }}
+  set_fact:
+    papermc_build_number: "{{ build_result_raw.json.builds | last }}"
+
+- name: get information related to the {{ papermc_build_number }} build.
+  uri:
+    url: "https://papermc.io/api/v2/projects/{{ paper_project }}/versions/{{ minecraft_target }}/builds/{{ papermc_build_number }}" 
+    return_content: yes
+  register: download_result_raw
+
+
+- name: extract latest build info {{ papermc_build_number }}
+  set_fact:
+    papermc_jar_name: "{{ download_result_raw.json.downloads.application.name }}"
+    papermc_jar_sha256: "{{ download_result_raw.json.downloads.application.sha256 }}"
+    papermc_commit_id: "{{ download_result_raw.json.changes | map(attribute='commit') | last }}"
+
+- name: download paper {{ minecraft_target }} (build {{ papermc_build_number }})
+  # become_user: "{{ main_user }}"
+  get_url:
+    url: "https://papermc.io/api/v2/projects/{{ paper_project }}/versions/{{ minecraft_target }}/builds/{{ papermc_build_number }}/downloads/{{ papermc_jar_name }}"
+    dest: "{{ server_path }}"
+    checksum: "sha256:{{ papermc_jar_sha256 }}"

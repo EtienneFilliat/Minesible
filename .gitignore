@@ -1,0 +1,4 @@
+vault_passwd.clear
+vault_passwd.gpg
+*.txt
+test/
