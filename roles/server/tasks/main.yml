@@ -1,0 +1,20 @@
+---
+
+# https://minecraft.fandom.com/wiki/Tutorials/Server_startup_script
+
+- import_tasks: papermc.yml
+
+- name: Copy file accepted eula to {{ server_name }} server
+  ansible.builtin.copy:
+    src: eula.txt
+    dest: "{{ server_path }}"
+    owner: "{{ main_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0644'
+
+- name: template systemd for {{ server_name }}
+  template:
+    src: minecraft@.service
+    dest: /etc/systemd/system/minecraft@{{ server_name }}.service
+    mode: '600'
+  notify: restart minecraft service

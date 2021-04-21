@@ -1,0 +1,9 @@
+---
+
+- name: enable and restart minecarft server
+  listen: restart minecraft service
+  systemd:
+    name: minecraft@{{ server_name }}.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

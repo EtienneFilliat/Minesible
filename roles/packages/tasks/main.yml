@@ -2,14 +2,14 @@
 
 - name: Install Required packages
   apt:
-    pkg:
-      - "{{ required_packages }}"
+    name: "{{ item }}"
     state: present
+  loop: "{{ required_packages | default([]) }}"
 
 - name: Update apt cache
   apt:
     update_cache: yes
 
-- name: install openjdk
+- name: install {{ openjdk_release }}
   apt:
     name: "{{ openjdk_release }}"

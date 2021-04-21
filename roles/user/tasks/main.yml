@@ -1,14 +1,22 @@
 ---
 
+- name: Ensure group "{{ minecraft_group }}" exists
+  group:
+    name: "{{ minecraft_group }}"
+    state: present
+
 - name: create main user
   user:
     name: "{{ main_user }}"
-    shell: /bin/zsh
+    group: "{{ minecraft_group }}"
+    shell: /bin/sh
+    system: true
     create_home: yes
-    append: yes
+    home: /opt/minecraft
 
 - name: create minecraft server directory
-  become_user: "{{ main_user }}"
   file:
     path: "{{ server_path }}"
     state: directory
+    owner: "{{ main_user }}"
+    group: "{{ minecraft_group }}"

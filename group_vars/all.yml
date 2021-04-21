@@ -3,15 +3,17 @@
 # --------- USER
 
 main_user: minecraft
+minecraft_group: minecraft
+main_user_home: "/opt/{{ main_user }}"
 
- server_path: "/home/{{ main_user }}/minesible-{{ ansible_date_time.date }}"
 
 # --------- PACKAGES
 
 required_packages:
   - software-properties-common
-  - python-software-properties
+  - screen
 
+# Java 11 will be required for future releases starting with Minecraft 1.17
 openjdk_release: openjdk-8-jdk-headless
 
 # --------- PaperMC
@@ -23,3 +25,20 @@ minecraft_minor_version: 5
 minecraft_target: "{{ minecraft_major_version }}.{{minecraft_minor_version}}"
 
 paper_project: paper
+
+# --------- Server
+
+server_name: Minesible
+
+server_path: "{{ main_user_home }}/{{ server_name }}"
+
+# TODO: Auto generate
+server_id: 77C68004
+
+jvm_min_mem: 1G
+
+jvm_max_mem: 1G
+
+shutdown_delay: 5
+
+post_shutdown_delay: 10
