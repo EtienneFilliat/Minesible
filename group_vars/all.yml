@@ -37,7 +37,7 @@ server_id: 77C68004
 
 jvm_min_mem: 1G
 
-jvm_max_mem: 1G
+jvm_max_mem: 8G
 
 shutdown_delay: 5
 

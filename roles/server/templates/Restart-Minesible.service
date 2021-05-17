@@ -1,0 +1,7 @@
+[Unit]
+Description=Restart Minesible
+
+[Service]
+Type=oneshot
+ExecStart=/opt/minecraft/backup.sh
+WorkingDirectory=/opt/minecraft

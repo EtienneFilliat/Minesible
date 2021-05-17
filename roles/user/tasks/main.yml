@@ -9,7 +9,7 @@
   user:
     name: "{{ main_user }}"
     group: "{{ minecraft_group }}"
-    shell: /bin/sh
+    shell: /bin/bash
     system: true
     create_home: yes
     home: /opt/minecraft
